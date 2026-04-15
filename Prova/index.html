@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Impacto das Bets no Brasil - Dashboard Socioeconômico</title>
+    <style>
+        :root {
+            /* Paleta baseada no Verde principal #26874E (RGB: 38, 135, 78) */
+            --primary-color: #26874E; 
+            --primary-light: #e9f5ee;
+            --primary-dark: #1b5e36;
+            --secondary-color: #5ab27d; /* Verde médio para contraste no gráfico */
+            --bg-body: #f4f7f6;
+            --text-main: #2d3436;
+            --white: #ffffff;
+            --border-radius: 8px;
+            --shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            display: flex;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Skip Link para Acessibilidade (eMAG) */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: var(--primary-dark);
+            color: var(--white);
+            padding: 10px;
+            z-index: 100;
+            transition: top 0.3s;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .skip-link:focus { top: 0; }
+
+        /* Sidebar de Filtros */
+        aside {
+            width: 300px;
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 2rem;
+            box-shadow: 4px 0 10px rgba(0,0,0,0.1);
+        }
+
+        aside h2 {
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid rgba(255,255,255,0.2);
+            padding-bottom: 0.5rem;
+        }
+
+        .filter-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        select, input[type="range"] {
+            width: 100%;
+            padding: 10px;
+            border-radius: var(--border-radius);
+            border: none;
+            font-size: 1rem;
+        }
+
+        /* Affordance de Foco */
+        select:focus, input:focus, button:focus {
+            outline: 3px solid #ffcc00; /* Alto contraste para navegação por teclado */
+            outline-offset: 2px;
+        }
+
+        .btn-aplicar {
+            background: var(--primary-dark);
+            color: var(--white);
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: background 0.3s;
+        }
+
+        .btn-aplicar:hover {
+            background: #134427;
+        }
+
+        /* Área Principal */
+        main {
+            flex: 1;
+            padding: 2rem;
+            max-width: 1200px;
+            overflow-y: auto;
+        }
+
+        header {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .description {
+            color: #4a4a4a;
+            font-size: 1.1rem;
+        }
+
+        /* Container de Gráficos */
+        .charts-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .card {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            border-top: 5px solid var(--primary-color);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card h2 {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-dark);
+        }
+
+        /* Área do SVG */
+        .chart-placeholder {
+            width: 100%;
+            height: 300px;
+            background: #fafafa;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+        }
+
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .line {
+            fill: none;
+            stroke-width: 3;
+            stroke-linecap: round;
+        }
+
+        .axis-label {
+            font-size: 12px;
+            fill: #4a4a4a;
+        }
+
+        /* Rodapé */
+        footer {
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            color: #7f8c8d;
+        }
+
+        .authorship { font-weight: bold; }
+
+        /* Responsividade */
+        @media (max-width: 900px) {
+            body { flex-direction: column; }
+            aside { width: 100%; }
+            .charts-container { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <a href="#main-content" class="skip-link">Ir para o conteúdo principal</a>
+
+    <aside role="complementary">
+        <h2>Filtros</h2>
+        
+        <div class="filter-group">
+            <label for="month-select">Selecione o mês:</label>
+            <select id="month-select" name="month">
+                <option value="jan">Janeiro</option>
+                <option value="fev">Fevereiro</option>
+                <option value="mar">Março</option>
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <label for="age-range">Selecione a idade máxima: <span id="age-val" aria-live="polite">65</span> anos</label>
+            <input type="range" id="age-range" min="18" max="100" value="65" aria-valuemin="18" aria-valuemax="100">
+        </div>
+
+        <button type="button" class="btn-aplicar">
+            Aplicar Filtros
+        </button>
+    </aside>
+
+    <main id="main-content">
+        <header>
+            <h1>Inadimplência Familiar x "Bets"</h1>
+            <p class="description">
+                Análise do impacto do crescimento das apostas esportivas online no orçamento das famílias brasileiras e o perfil demográfico dos apostadores.
+            </p>
+        </header>
+
+        <div class="charts-container">
+            <section class="card" aria-labelledby="chart1-title">
+                <h2 id="chart1-title">1. Orçamento Familiar x Gastos com Bets</h2>
+                <div class="chart-placeholder" role="img" aria-label="Gráfico de linhas mostrando a estagnação do orçamento familiar enquanto os gastos com apostas sobem de janeiro a março.">
+                    <svg viewBox="0 0 400 250">
+                        <line x1="40" y1="20" x2="40" y2="200" stroke="#ccc" />
+                        <line x1="40" y1="200" x2="380" y2="200" stroke="#ccc" />
+                        
+                        <path class="line" d="M40,80 Q150,70 250,90 T380,85" stroke="var(--primary-dark)" />
+                        <path class="line" d="M40,180 Q150,150 250,120 T380,50" stroke="var(--primary-color)" />
+                        
+                        <text x="50" y="220" class="axis-label">Jan</text>
+                        <text x="200" y="220" class="axis-label" text-anchor="middle">Fev</text>
+                        <text x="350" y="220" class="axis-label">Mar</text>
+                        
+                        <rect x="50" y="235" width="10" height="10" fill="var(--primary-dark)" />
+                        <text x="65" y="245" class="axis-label">Orçamento</text>
+                        <rect x="150" y="235" width="10" height="10" fill="var(--primary-color)" />
+                        <text x="165" y="245" class="axis-label">Gastos Bets</text>
+                    </svg>
+                </div>
+            </section>
+
+            <section class="card" aria-labelledby="chart2-title">
+                <h2 id="chart2-title">2. Perfil dos Apostadores (Pirâmide Etária)</h2>
+                <div class="chart-placeholder" role="img" aria-label="Gráfico de pirâmide etária indicando que a maior concentração de apostadores, tanto homens quanto mulheres, está na faixa dos 25 aos 34 anos. A base (jovens) e o meio são largos, estreitando-se nas idades mais avançadas.">
+                    <svg viewBox="0 0 400 250">
+                        <line x1="200" y1="20" x2="200" y2="200" stroke="#ccc" stroke-width="2" />
+                        
+                        <line x1="40" y1="200" x2="360" y2="200" stroke="#ccc" />
+
+                        <rect x="175" y="30" width="25" height="20" fill="var(--primary-color)" />
+                        <rect x="150" y="55" width="50" height="20" fill="var(--primary-color)" />
+                        <rect x="130" y="80" width="70" height="20" fill="var(--primary-color)" />
+                        <rect x="100" y="105" width="100" height="20" fill="var(--primary-color)" />
+                        <rect x="60" y="130" width="140" height="20" fill="var(--primary-color)" />
+                        <rect x="80" y="155" width="120" height="20" fill="var(--primary-color)" />
+
+                        <rect x="200" y="30" width="15" height="20" fill="var(--secondary-color)" />
+                        <rect x="200" y="55" width="30" height="20" fill="var(--secondary-color)" />
+                        <rect x="200" y="80" width="45" height="20" fill="var(--secondary-color)" />
+                        <rect x="200" y="105" width="70" height="20" fill="var(--secondary-color)" />
+                        <rect x="200" y="130" width="110" height="20" fill="var(--secondary-color)" />
+                        <rect x="200" y="155" width="90" height="20" fill="var(--secondary-color)" />
+
+                        <text x="35" y="45" class="axis-label" text-anchor="end">65+</text>
+                        <text x="35" y="70" class="axis-label" text-anchor="end">55-64</text>
+                        <text x="35" y="95" class="axis-label" text-anchor="end">45-54</text>
+                        <text x="35" y="120" class="axis-label" text-anchor="end">35-44</text>
+                        <text x="35" y="145" class="axis-label" text-anchor="end">25-34</text>
+                        <text x="35" y="170" class="axis-label" text-anchor="end">18-24</text>
+
+                        <rect x="100" y="225" width="10" height="10" fill="var(--primary-color)" />
+                        <text x="115" y="235" class="axis-label">Masculino</text>
+                        
+                        <rect x="200" y="225" width="10" height="10" fill="var(--secondary-color)" />
+                        <text x="215" y="235" class="axis-label">Feminino</text>
+                    </svg>
+                </div>
+            </section>
+        </div>
+
+        <footer>
+            <div class="authorship">
+                Desenvolvido por: Guilherme, Gustavo, Lucas Britos e Matheus
+            </div>
+            <div>
+                &copy; 2026 Projeto Integrador - Acessibilidade eMAG
+            </div>
+        </footer>
+    </main>
+
+    <script>
+        // Atualiza o valor do range de idade e avisa leitores de tela (aria-live="polite")
+        const slider = document.getElementById('age-range');
+        const val = document.getElementById('age-val');
+        slider.oninput = function() {
+            val.textContent = this.value;
+        }
+    </script>
+</body>
+</html>
