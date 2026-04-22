@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback - Impacto das Bets no Brasil | UniCEUB</title>
+    <style>
+        /* IDENTIDADE VISUAL UNICEUB */
+        :root {
+            --ceub-lilac: #662c92;   
+            --ceub-magenta: #ec0089; 
+            --text-primary: #2d2d2d;
+            --text-secondary: #555;
+            --bg-page: #f4f1f7;     
+            --bg-card: #ffffff;
+            --border-color: #e0d9e8;
+        }
+
+        /* GERAL */
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            background-color: var(--bg-page);
+            color: var(--text-primary);
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        main {
+            max-width: 650px;
+            width: 100%;
+            background: var(--bg-card);
+            padding: 40px;
+            border-radius: 12px;
+            border-top: 10px solid var(--ceub-lilac);
+            box-shadow: 0 10px 30px rgba(93, 45, 145, 0.15);
+        }
+
+        header h1 {
+            color: var(--ceub-lilac);
+            margin: 0 0 10px 0;
+            font-size: 1.75rem;
+        }
+
+        header p {
+            margin-bottom: 30px;
+            color: var(--text-secondary);
+        }
+
+        /* FORMULÁRIO E ACESSIBILIDADE */
+        fieldset {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-bottom: 25px;
+            padding: 20px;
+        }
+
+        legend {
+            font-weight: bold;
+            color: var(--ceub-lilac);
+            padding: 0 10px;
+            font-size: 1.1rem;
+        }
+
+        .field {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        textarea {
+            padding: 12px;
+            border: 2px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: all 0.2s ease-in-out;
+        }
+
+        /* FOCO ACESSÍVEL (Guia Bruk) */
+        input:focus, 
+        textarea:focus {
+            outline: 3px solid var(--ceub-magenta);
+            border-color: var(--ceub-lilac);
+            outline-offset: 2px;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+
+        .radio-option input {
+            margin-right: 12px;
+            accent-color: var(--ceub-magenta);
+            width: 20px;
+            height: 20px;
+        }
+
+        .actions {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        button {
+            background-color: var(--ceub-lilac);
+            color: #fff;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.3s ease;
+        }
+
+        button:hover, button:focus {
+            background-color: var(--ceub-magenta);
+            outline: 3px solid var(--ceub-lilac);
+        }
+
+        /* FOOTER ESTILIZADO */
+        footer {
+            margin-top: 40px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 20px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        footer a {
+            color: var(--ceub-lilac);
+            text-decoration: underline;
+            font-weight: 600;
+        }
+
+        footer a:hover, footer a:focus {
+            color: var(--ceub-magenta);
+            outline: 2px solid var(--ceub-magenta);
+            outline-offset: 2px;
+            text-decoration: none;
+        }
+
+        footer .links-footer {
+            margin-bottom: 10px;
+        }
+
+        footer .links-footer span {
+            margin: 0 10px;
+            color: var(--border-color);
+        }
+
+        /* RESPONSIVIDADE */
+        @media (max-width: 500px) {
+            main { padding: 20px; }
+            body { padding: 20px 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <main>
+        <header>
+            <h1>Feedback do Dashboard</h1>
+            <p>Contribua com o projeto sobre o impacto socioeconômico das Bets no Brasil.</p>
+        </header>
+
+        <form action="#" method="post">
+            <fieldset>
+                <legend>Seus Dados</legend>
+                <div class="field">
+                    <label for="nome">Nome completo</label>
+                    <input type="text" id="nome" name="nome" required aria-required="true">
+                </div>
+                <div class="field">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" name="email" required aria-required="true">
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Sua Avaliação</legend>
+                <p id="pergunta-dados">A clareza dos dados socioeconômicos apresentados é satisfatória?</p>
+                <div class="radio-group" role="radiogroup" aria-labelledby="pergunta-dados">
+                    <label class="radio-option">
+                        <input type="radio" name="avaliacao" value="sim"> Sim
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="avaliacao" value="não"> Não
+                    </label>
+                </div>
+
+                <div class="field" style="margin-top: 15px;">
+                    <label for="comentario">Sugestões de melhoria</label>
+                    <textarea id="comentario" name="comentario" rows="4"></textarea>
+                </div>
+            </fieldset>
+
+            <div class="actions">
+                <button type="submit">Enviar Formulário</button>
+            </div>
+        </form>
+
+        <footer>
+            <div class="links-footer">
+                <a href="https://github.com/Lukithas/pi-bets" target="_blank" rel="noopener">Repositório do Projeto</a>
+                <span>|</span>
+                <a href="https://institucional.uniceub.br/" target="_blank" rel="noopener">Portal UniCEUB</a>
+            </div>
+            <p>
+                Desenvolvido para fins acadêmicos &copy; 2026. <br>
+                <strong>CEUB - Centro Universitário de Brasília</strong>
+            </p>
+        </footer>
+    </main>
+
+</body>
+</html>
