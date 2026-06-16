@@ -1,0 +1,4 @@
+Desafio 3:
+O primeiro passo é entender o perfil do Ricardo e o problema a ser resolvido. Ricardo está perdendo sua visão gradativamente devido a uma doença adquirida na infância. O problema é que ele tem sentido muita dificuldade para se locomover em ambientes desconhecidos devido à perda progressiva da visão.
+O segundo passo é analisar e idealizar. Como Ricardo é apaixonado por tecnologia e por experiências computacionais, acaba sendo um facilitador saber que ele já utiliza vários aparelhos tecnológicos, pois em vez de criar um hardware totalmente novo, a equipe deve projetar um sistema que se integre aos dispositivos que ele já domina.
+O próximo passo seria a prototipação. A equipe materializa as ideias em protótipos para validar a lógica do sistema e antes do desenvolvimento final da aplicação, a interface deve ser validada na prática.
